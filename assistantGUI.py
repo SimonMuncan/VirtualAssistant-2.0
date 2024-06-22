@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         self.view.move(30, 30)
         self.view.resize(520, 400)
         self.view.setVisible(False)
-
+        self.weatherInfo()
         # creating a timer object
         timer = QTimer(self)
         self.timer_weather = QTimer(self)
@@ -85,9 +85,9 @@ class MainWindow(QMainWindow):
 
     def weatherInfo(self):
         weather_data = Weather.checkCurrentWeather()
-        print(weather_data)
+        self.assistantResponse(weather_data)
         if "rain" in weather_data:
-           print("It's raining! Don't forget your umbrella.")
+           self.assistantResponse("It's raining! Don't forget your umbrella.")
         self.update()
     
     # method called by timer
