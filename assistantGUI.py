@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
     def initUI(self):
         self.setWindowTitle("Sophia - Virtual Assistant")
         self.setGeometry(200, 100, 1000, 550)
+        self.setWindowIcon(QIcon("icon.jpg"))
 
         self.label1 = QLabel(self)
         self.label1.move(30, 500)
