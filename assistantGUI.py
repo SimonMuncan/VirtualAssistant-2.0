@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         self.view.move(30, 30)
         self.view.resize(520, 400)
         self.view.setVisible(False)
-        self.weatherInfo()
+        
         # creating a timer object
         timer = QTimer(self)
         self.timer_weather = QTimer(self)
