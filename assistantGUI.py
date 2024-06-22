@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.initUI()
 #Set up the UI
     def initUI(self):
-        self.setWindowTitle("Virtual Assistant")
+        self.setWindowTitle("Sophia - Virtual Assistant")
         self.setGeometry(200, 100, 1000, 550)
 
         self.label1 = QLabel(self)
