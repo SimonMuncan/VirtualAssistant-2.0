@@ -58,6 +58,7 @@ class ShowActivitySchedule(CommandStrategy):
             print(sql_query)
             # Show the activities in the main window
             main_window.ShowActivities(sql_query)
+            
         
 
 # Strategy for showing the home page

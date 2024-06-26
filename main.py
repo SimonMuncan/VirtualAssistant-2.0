@@ -6,6 +6,7 @@ from assistantGUI import *
 app = QApplication(sys.argv)
 # Create an instance of the MainWindow class
 window = MainWindow()
+
 # Show the main window
 window.show()
 
