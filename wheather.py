@@ -79,7 +79,7 @@ class Weather():
         return response['data'][0]['aqi']
     
     def airQuality():
-        return 42
+        return 142
     
     def airQualityString():
         aqi = Weather.airQuality()

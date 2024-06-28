@@ -63,7 +63,9 @@ class MainWindow(QMainWindow):
         self.view.cellChanged.connect(self.updateDatabaseReccuring)
 
         
-        
+        self.timer_schedule = QTimer(self)
+        self.timer_schedule.timeout.connect(self.checkSchedule)
+        self.timer_schedule.start(60000)
         #initialize weather page
         self.weatherGUI()
 
@@ -251,7 +253,8 @@ class MainWindow(QMainWindow):
         self.groupBoxWeather.setVisible(False)
 
     def findDay(self, dayNumber):
-        days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        days = {7:"Sunday", 1:"Monday", 2:"Tuesday", 3:"Wednesday", 4:"Thursday", 5:"Friday", 6:"Saturday"}
+
         return days[dayNumber+1]
     
     def getUV(self, uv_factor):
@@ -299,7 +302,12 @@ class MainWindow(QMainWindow):
         # showing it to the label
         self.lblclock.setText(str(current_time))
     
-    
+    def checkSchedule(self):
+        list_schedule = self.getSchedule(self.findDay(datetime.datetime.weekday(datetime.datetime.today())))
+        for i in list_schedule:
+            if i[0]== datetime.datetime.now().strftime("%H:%M"):
+                self.assistantResponse(f"It's time for {str(i[1])} at {str(i[2])}")
+
     def onClick(self):
         command = self.textbox.text()
         self.textbox.setText("")
@@ -334,6 +342,26 @@ class MainWindow(QMainWindow):
         ctime = datetime.datetime.today().strftime("%H:%M")
         self.chat_area.append(f"<p style='color:#333333;font-family: georgia'><b>Sophia:</b> {string} [{ctime}]</p>")
 
+    def getSchedule(self, today):
+        try:
+            self.view.setColumnCount(5)
+            self.view.setHorizontalHeaderLabels(["ID","Time Start", "Time Stop", "Activity", "Location"])
+            
+            sql_query = f"SELECT TimeStart,Activity,Location FROM {today}"
+
+            con = sqlite3.connect("database.db")
+            cur = con.cursor()
+            cur.execute(sql_query)
+            list = []
+            for row in cur.fetchall():
+                list.append(row)
+            return list
+        except sqlite3.Error as error:
+            print("Failed to execute the above query", error)
+        finally:
+            if con:
+                con.close()
+        
     def showSchedule(self, sqlquery):
         try:
             self.view.setColumnCount(5)
@@ -398,7 +426,7 @@ class MainWindow(QMainWindow):
             SET TimeStart = "{str(time_start)}", TimeStop = "{str(time_stop)}", Activity = "{str(activity)}", Location = "{str(location)}", Day ="{self.table_name}"
             WHERE id = {int(id)}
             """
-            print(update_query)
+            #print(update_query)
             cur.execute(update_query) 
             con.commit()
         except sqlite3.Error as error:
@@ -474,7 +502,7 @@ class MainWindow(QMainWindow):
             SET Date = "{str(date)}", TimeStart = "{str(time_start)}", TimeStop = "{str(time_stop)}", Activity = "{str(activity)}", Location = "{str(location)}"
             WHERE id = {int(id)}
             """
-            print(update_query)
+            #print(update_query)
             cur.execute(update_query) 
             con.commit()
         except sqlite3.Error as error:
@@ -551,7 +579,7 @@ class MainWindow(QMainWindow):
             SET DateStart = "{str(date_start)}", DateStop = "{str(date_stop)}", TimeStart = "{str(time_start)}", TimeStop = "{str(time_stop)}", Activity = "{str(activity)}", Location = "{str(location)}"
             WHERE id = {int(id)}
             """
-            print(update_query)
+            #print(update_query)
             cur.execute(update_query) 
             con.commit()
         except sqlite3.Error as error:
