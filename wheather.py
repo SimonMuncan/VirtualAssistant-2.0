@@ -1,4 +1,4 @@
-import requests, geocoder, random
+import requests, geocoder
 
 class Weather():
     # Get user's location based on IP address
@@ -20,7 +20,7 @@ class Weather():
 
         # Headers for API request
         headers = {
-	        "x-rapidapi-key": "613fa57601msh56fa4a7e7a50b5cp1d7c22jsn333fa9d8aa13",
+	        "x-rapidapi-key": "",
 	        "x-rapidapi-host": "weatherapi-com.p.rapidapi.com"
         }
         # Send request to the API
@@ -37,7 +37,7 @@ class Weather():
         querystring = {"q":string,"days":"3"}
 
         headers = {
-	        "x-rapidapi-key": "613fa57601msh56fa4a7e7a50b5cp1d7c22jsn333fa9d8aa13",
+	        "x-rapidapi-key": "",
 	        "x-rapidapi-host": "weatherapi-com.p.rapidapi.com"
         }
 
@@ -54,7 +54,7 @@ class Weather():
         querystring = {"lat":lat,"lon":lon,"timezone":"auto","language":"en"}
         
         headers = {
-	        "x-rapidapi-key": "613fa57601msh56fa4a7e7a50b5cp1d7c22jsn333fa9d8aa13",
+	        "x-rapidapi-key": "",
 	        "x-rapidapi-host": "ai-weather-by-meteosource.p.rapidapi.com"   
         }
 
@@ -70,7 +70,7 @@ class Weather():
         querystring = {"lon":lon,"lat":lat}
 
         headers = {
-	        "x-rapidapi-key": "613fa57601msh56fa4a7e7a50b5cp1d7c22jsn333fa9d8aa13",
+	        "x-rapidapi-key": "",
 	        "x-rapidapi-host": "air-quality.p.rapidapi.com"
         }
 

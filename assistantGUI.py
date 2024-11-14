@@ -1,9 +1,7 @@
 import datetime, chime
 from PyQt6.QtWidgets import *
-from PyQt6.QtSql import QSqlDatabase, QSqlTableModel
 from PyQt6.QtCore import QTimer
 from PyQt6.QtGui import *
-from PyQt6.QtCore import Qt, QPointF
 from RainbowBar import RainbowBar
 from showSchedule import ShowSchedule, ShowActivitySchedule, showHomePage
 from showAppointments import ShowAllAppointments,ShowAppointments
@@ -26,7 +24,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Sophia - Virtual Assistant")
         self.setGeometry(200, 100, 1000, 550)
         self.setWindowIcon(QIcon("pictures/icon.jpg"))
-        self.setMaximumSize(1000,530)
+        # self.setMaximumSize(1000,530)
 
         self.lblclock = QLabel(self)
         self.lblclock.move(775, 500)
@@ -286,7 +284,7 @@ class MainWindow(QMainWindow):
 
     def weatherInfo(self):
         weather_data = Weather.checkCurrentWeather()
-        self.assistantResponse(weather_data)
+        #self.assistantResponse(weather_data)
         if "rain" in weather_data:
            self.assistantResponse("It's raining! Don't forget your umbrella.")
         elif "sunny" in weather_data:   
