@@ -1,4 +1,12 @@
+import os
 import requests, geocoder
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+WEATHER_API_KEY =  os.environ.get("WEATHER_API_KEY", "")
+
 
 class Weather():
     # Get user's location based on IP address
@@ -20,7 +28,7 @@ class Weather():
 
         # Headers for API request
         headers = {
-	        "x-rapidapi-key": "",
+	        "x-rapidapi-key": WEATHER_API_KEY,
 	        "x-rapidapi-host": "weatherapi-com.p.rapidapi.com"
         }
         # Send request to the API
@@ -37,7 +45,7 @@ class Weather():
         querystring = {"q":string,"days":"3"}
 
         headers = {
-	        "x-rapidapi-key": "",
+	        "x-rapidapi-key": WEATHER_API_KEY,
 	        "x-rapidapi-host": "weatherapi-com.p.rapidapi.com"
         }
 
@@ -54,7 +62,7 @@ class Weather():
         querystring = {"lat":lat,"lon":lon,"timezone":"auto","language":"en"}
         
         headers = {
-	        "x-rapidapi-key": "",
+	        "x-rapidapi-key": WEATHER_API_KEY,
 	        "x-rapidapi-host": "ai-weather-by-meteosource.p.rapidapi.com"   
         }
 
@@ -70,12 +78,11 @@ class Weather():
         querystring = {"lon":lon,"lat":lat}
 
         headers = {
-	        "x-rapidapi-key": "",
+	        "x-rapidapi-key": WEATHER_API_KEY,
 	        "x-rapidapi-host": "air-quality.p.rapidapi.com"
         }
 
         response = requests.get(url, headers=headers, params=querystring).json()
-        print(response['data'][0]['aqi'])
         return response['data'][0]['aqi']
     
     def airQuality():

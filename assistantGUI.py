@@ -11,7 +11,7 @@ from updateSchedule import insertSchedule, removeSchedule
 from showAppointments import *
 from wheather import Weather
 import sqlite3
-
+import suggest_command
 
 #Main window class
 class MainWindow(QMainWindow):
@@ -126,7 +126,6 @@ class MainWindow(QMainWindow):
         self.groupBoxWeather.setGeometry(30,30, 520, 400)  # Set position and size of the group box
         response_current = Weather.checkCurrentWeather()
         response_forecast = Weather.forecast3days()
-        
         # Create the weather label
         self.lblWeather = QLabel(self.groupBoxWeather)
         self.lblWeather.setGeometry(20, 2, 400, 25)  # Set position and size of the label
@@ -167,7 +166,7 @@ class MainWindow(QMainWindow):
         self.lbl1stTemp.setGeometry(30, 225, 100, 100) 
         self.lbl1stTemp.setFont(QFont("Arial", 12))
         self.lbl1stTemp.setText(f"Max: {str(response_forecast['forecast']['forecastday'][0]['day']['maxtemp_c'])}°C\nMin: {str(response_forecast['forecast']['forecastday'][0]['day']['mintemp_c'])}°C\n")
-        print(response_forecast['forecast']['forecastday'][0]['date'])
+        #print(response_forecast['forecast']['forecastday'][0]['date'])
         #Picture of 1st day temp
         self.lbl1stTempPic = QLabel(self.groupBoxWeather)
         weather_pic_path_1 = self.returnWeatherPicture(response_forecast['forecast']['forecastday'][0]['day']['condition']['text'])
@@ -185,7 +184,7 @@ class MainWindow(QMainWindow):
         self.lbl2ndTemp.setGeometry(150, 225, 100, 100) 
         self.lbl2ndTemp.setFont(QFont("Arial", 12))
         self.lbl2ndTemp.setText(f"Max: {str(response_forecast['forecast']['forecastday'][1]['day']['maxtemp_c'])}°C\nMin: {str(response_forecast['forecast']['forecastday'][0]['day']['mintemp_c'])}°C\n")
-        print(response_forecast['forecast']['forecastday'][1]['date'])
+        #print(response_forecast['forecast']['forecastday'][1]['date'])
         #Picture of 2nd day temp
         self.lbl2ndTempPic = QLabel(self.groupBoxWeather)
         weather_pic_path_2 = self.returnWeatherPicture(response_forecast['forecast']['forecastday'][1]['day']['condition']['text'])
@@ -203,7 +202,7 @@ class MainWindow(QMainWindow):
         self.lbl3rdTemp.setGeometry(265, 225, 100, 100) 
         self.lbl3rdTemp.setFont(QFont("Arial", 12))
         self.lbl3rdTemp.setText(f"Max: {str(response_forecast['forecast']['forecastday'][2]['day']['maxtemp_c'])}°C\nMin: {str(response_forecast['forecast']['forecastday'][0]['day']['mintemp_c'])}°C\n")
-        print(response_forecast['forecast']['forecastday'][2]['date'])
+        #print(response_forecast['forecast']['forecastday'][2]['date'])
         #Picture of 3rd day temp
         self.lbl3rdTempPic = QLabel(self.groupBoxWeather)
         weather_pic_path_3 = self.returnWeatherPicture(response_forecast['forecast']['forecastday'][2]['day']['condition']['text'])
@@ -328,6 +327,23 @@ class MainWindow(QMainWindow):
             showHomePage(),
             ShowWeatherPage()
         ]
+        commands = [
+            re.compile("make me (a|an) (.*) appointment from (.*) to (.*) from \d{2}:\d{2} to \d{2}:\d{2} at (.*)",re.IGNORECASE),
+            re.compile("show my (one time|reccuring) appointments",re.IGNORECASE),
+            re.compile("show my appointments for (today|tomorrow|(.*))",re.IGNORECASE),
+            re.compile("show home page",re.IGNORECASE),
+            re.compile("show my (.*) schedule",re.IGNORECASE),
+            re.compile("show my schedule for (Monday|Tuesday|Wednesday|Thrusday|Friday|Saturday|Sunday|work)",re.IGNORECASE),
+            "show weather",
+            re.compile("remove my (.*) appointment from (.*) to (.*) at \d{2}:\d{2}",re.IGNORECASE),
+            re.compile("remove my (.*) appointment for (.*) at \d{2}:\d{2}",re.IGNORECASE),
+            re.compile("make me (a|an) (.*) appointment for (.*) from \d{2}:\d{2} to \d{2}:\d{2} at (.*)",re.IGNORECASE),
+            re.compile("schedule me for (Monday|Tuesday|Wednesday|Thrusday|Friday|Saturday|Sunday|work) (.*) from \d{2}:\d{2} to \d{2}:\d{2} at (.*)",re.IGNORECASE),
+            re.compile("remove from my (Monday|Tuesday|Wednesday|Thrusday|Friday|Saturday|Sunday|work) schedule (.*) at \d{2}:\d{2}",re.IGNORECASE),
+            "show home page"
+        ]
+        if command not in commands:
+            self.assistantResponse(suggest_command.suggest_command(command))
         #Search right strategy
         for strategy in strategies:
             strategy.execute(self,command)
